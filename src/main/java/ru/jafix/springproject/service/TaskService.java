@@ -1,0 +1,55 @@
+package ru.jafix.springproject.service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import ru.jafix.springproject.dto.tasks.CreateTaskDto;
+import ru.jafix.springproject.mapper.TaskMapper;
+import ru.jafix.springproject.model.Task;
+import ru.jafix.springproject.repository.TaskRepository;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class TaskService {
+
+    private final TaskRepository taskRepository;
+    private final TaskMapper taskMapper;
+
+    public Task createTask(CreateTaskDto createTaskDto) {
+        Task task = taskMapper.toTask(createTaskDto);
+        return taskRepository.save(task);
+    }
+
+    public Task editTask(Task task) {
+        if (task.getId() == null) {
+            throw new IllegalArgumentException("При редактировании задачи надо указать ID");
+        }
+
+        if (task.getName() == null || task.getName().isBlank()) {
+            throw new IllegalArgumentException("Название задачи не может быть пустым");
+        }
+
+        return taskRepository.save(task);
+    }
+
+    public Task findById(UUID id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> {
+                    String error = "Задачи с таким id не найдено: " + id;
+                    log.error(error);
+                    return new IllegalArgumentException(error);
+                });
+    }
+
+    public List<Task> findAll() {
+        return taskRepository.findAll();
+    }
+
+    public void removeTask(UUID id) {
+        taskRepository.deleteById(id);
+    }
+}
