@@ -1,0 +1,14 @@
+databaseChangelog:
+  - changeSet:
+      id: 1
+      author: kliuevia
+      changes:
+        - createTable:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
