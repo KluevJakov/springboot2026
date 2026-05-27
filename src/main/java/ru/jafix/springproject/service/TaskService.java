@@ -3,6 +3,7 @@ package ru.jafix.springproject.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jafix.springproject.dto.tasks.CreateTaskDto;
 import ru.jafix.springproject.mapper.TaskMapper;
 import ru.jafix.springproject.model.Task;
@@ -45,11 +46,22 @@ public class TaskService {
                 });
     }
 
-    public List<Task> findAll() {
+    public List<Task> findAll(UUID ownerId, Integer score) {
+        if (ownerId != null) {
+            return taskRepository.findByOwnerIdOrderByName(ownerId);
+        }
+        if (score != null) {
+            return taskRepository.findByScoreMoreThanNative(score);
+        }
         return taskRepository.findAll();
     }
 
     public void removeTask(UUID id) {
         taskRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void completeLowScored() {
+        taskRepository.completeLowScoreTasks();
     }
 }

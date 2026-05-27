@@ -4,7 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.util.UUID;
 
 @Data
 @Schema(description = "Модель для создания задачи")
@@ -17,4 +20,8 @@ public class CreateTaskDto {
     @Max(value = 100L, message = "Кол-во очков должно быть не больше 100")
     @Schema(description = "Виртуальные баллы за выполнение задачи", example = "20")
     private Integer score;
+
+    @NotNull(message = "Идентификатор пользоателя")
+    @Schema(description = "Идентификатор владельца задачи")
+    private UUID ownerId;
 }

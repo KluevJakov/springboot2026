@@ -39,7 +39,9 @@ public interface TaskController {
 
     Task findById(UUID id);
 
-    List<Task> findAll();
+    void completeTask();
+
+    List<Task> findAll(UUID ownerId, Integer score);
 
     void removeTask(UUID id);
 }
