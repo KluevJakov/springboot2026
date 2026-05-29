@@ -1,6 +1,7 @@
 package ru.jafix.springproject.model;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,4 +20,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String login;
+    @Column(name = "additional_info")
+    private String additionalInfo;
 }

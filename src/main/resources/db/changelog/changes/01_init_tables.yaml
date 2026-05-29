@@ -1,4 +1,4 @@
-databaseChangelog:
+databaseChangeLog:
   - changeSet:
       id: 1
       author: kliuevia
@@ -12,3 +12,33 @@ databaseChangelog:
                   constraints:
                     primaryKey: true
                     nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: completed
+                  type: BOOLEAN
+              - column:
+                  name: score
+                  type: int
+              - column:
+                  name: owner_id
+                  type: UUID
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: login
+                  type: varchar(255)
+        - addForeignKeyConstraint:
+            baseTableName: tasks
+            baseColumnNames: owner_id
+            constraintName: fk_tasks_users
+            referencedTableName: users
+            referencedColumnNames: id
