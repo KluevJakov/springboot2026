@@ -8,12 +8,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "tasks")
-public class Task {
+public class Task implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 42L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

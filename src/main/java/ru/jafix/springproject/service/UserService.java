@@ -2,6 +2,9 @@ package ru.jafix.springproject.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.jafix.springproject.dto.users.CreateUserDto;
 import ru.jafix.springproject.dto.users.UpdateUserDto;
@@ -27,12 +30,14 @@ public class UserService {
         return userMapper.toUserDto(userToSave);
     }
 
+    @CachePut(key = "#updateUserDto.id", cacheNames = "users")
     public UserDto editUser(UpdateUserDto updateUserDto) {
         User userToSave = userMapper.toUser(updateUserDto);
         userRepository.save(userToSave);
         return userMapper.toUserDto(userToSave);
     }
 
+    @Cacheable(key = "#id", cacheNames = "users")
     public UserDto findById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
@@ -50,6 +55,7 @@ public class UserService {
                 .toList();
     }
 
+    @CacheEvict(key = "#id", cacheNames = "users")
     public void removeById(UUID id) {
         userRepository.deleteById(id);
     }

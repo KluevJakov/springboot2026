@@ -2,6 +2,9 @@ package ru.jafix.springproject.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jafix.springproject.dto.tasks.CreateTaskDto;
@@ -25,6 +28,7 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    @CachePut(key = "#task.id", cacheNames = "tasks")
     public Task editTask(Task task) {
         if (task.getId() == null) {
             throw new IllegalArgumentException("При редактировании задачи надо указать ID");
@@ -37,6 +41,7 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    @Cacheable(key = "#id", cacheNames = "tasks")
     public Task findById(UUID id) {
         return taskRepository.findById(id)
                 .orElseThrow(() -> {
@@ -56,6 +61,7 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
+    @CacheEvict(key = "#id", cacheNames = "tasks")
     public void removeTask(UUID id) {
         taskRepository.deleteById(id);
     }
