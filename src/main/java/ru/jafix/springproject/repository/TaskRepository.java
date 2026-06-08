@@ -23,4 +23,8 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
     @Modifying
     @Query("UPDATE Task t SET t.completed = true where t.score < 10")
     int completeLowScoreTasks();
+
+    @Modifying
+    @Query("UPDATE Task t SET t.score = t.score + :score")
+    int increaseScore(@Param("score") int score);
 }

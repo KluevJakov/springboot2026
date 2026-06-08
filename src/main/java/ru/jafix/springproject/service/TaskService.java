@@ -70,4 +70,9 @@ public class TaskService {
     public void completeLowScored() {
         taskRepository.completeLowScoreTasks();
     }
+
+    @Transactional
+    public void increaseScore(int score) {
+        taskRepository.increaseScore(score);
+    }
 }
