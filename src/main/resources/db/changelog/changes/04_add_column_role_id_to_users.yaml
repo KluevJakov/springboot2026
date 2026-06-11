@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: kliuevia
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: role_id
+                  type: uuid
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: password
+                  type: varchar(255)
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: role_id
+            constraintName: fk_users_roles
+            referencedTableName: roles
+            referencedColumnNames: id

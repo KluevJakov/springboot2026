@@ -11,10 +11,14 @@ import ru.jafix.springproject.model.User;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
     @Mapping(target = "additionalInfo", ignore = true)
     @Mapping(target = "id", ignore = true)
     User toUser(CreateUserDto createUserDto);
 
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
     @Mapping(target = "additionalInfo", ignore = true)
     User toUser(UpdateUserDto updateUserDto);
 

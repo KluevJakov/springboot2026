@@ -16,7 +16,7 @@ public class ScheduledConfig {
     private final TaskService taskService;
 
 
-    @Scheduled(cron = "*/30 * * * * *", zone = "Europe/Saratov")
+    //@Scheduled(cron = "*/30 * * * * *", zone = "Europe/Saratov")
     public void increaseScoreEveryNight() {
         log.info("Запуск задачи каждые 30 секунд");
         taskService.increaseScore(5);

@@ -1,10 +1,10 @@
-package ru.jafix.springproject.dto.users;
+package ru.jafix.springproject.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class CreateUserDto {
+public class AuthDto {
     @NotBlank
     private String login;
     @NotBlank

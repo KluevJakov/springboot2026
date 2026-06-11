@@ -3,9 +3,13 @@ package ru.jafix.springproject.controller.handler;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.jafix.springproject.dto.common.ErrorDto;
 
@@ -38,6 +42,24 @@ public class ControllerAdvisor {
 
         log.error("Ошибка валидации: {}", errorDto);
         return ResponseEntity.badRequest().body(errorDto);
+    }
+
+    @ExceptionHandler(exception = IllegalArgumentException.class)
+    public ResponseEntity<ErrorDto> handleIllegalArgumentException(IllegalArgumentException e) {
+        ErrorDto errorDto = ErrorDto.builder()
+                .errors(List.of(e.getMessage()))
+                .build();
+
+        log.error("Ошибка валидации: {}", errorDto);
+        return ResponseEntity.badRequest().body(errorDto);
+    }
+
+    @ExceptionHandler(exception = AuthenticationException.class)
+    public ResponseEntity<ErrorDto> handleAuthenticationException(AuthenticationException e) {
+        ErrorDto errorDto = ErrorDto.builder()
+                .errors(List.of(e.getMessage()))
+                .build();
+        return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(errorDto);
     }
 
     @ExceptionHandler(exception = Exception.class)

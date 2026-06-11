@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: kliuevia
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  value: "c9b7e95e-16a7-44c2-b7e9-5e16a7c4c2d0"
+              - column:
+                  name: name
+                  value: "ADMIN"
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  value: "9b4c1fa7-d2a9-44c7-8c1f-a7d2a984c711"
+              - column:
+                  name: name
+                  value: "USER"
