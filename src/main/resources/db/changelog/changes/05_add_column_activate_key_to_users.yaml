@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5
+      author: kliuevia
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: activate_key
+                  type: uuid
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: enable
+                  type: BOOLEAN

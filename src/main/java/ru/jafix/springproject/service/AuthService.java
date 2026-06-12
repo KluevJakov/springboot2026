@@ -22,10 +22,7 @@ import ru.jafix.springproject.model.Role;
 import ru.jafix.springproject.model.User;
 
 import javax.crypto.SecretKey;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j

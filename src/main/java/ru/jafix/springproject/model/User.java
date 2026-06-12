@@ -32,6 +32,11 @@ public class User implements UserDetails {
     @Column(name = "additional_info")
     private String additionalInfo;
 
+    @JsonIgnore
+    @Column(name = "activate_key")
+    private UUID activateKey;
+    private boolean enable;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
@@ -74,6 +79,6 @@ public class User implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return enable;
     }
 }

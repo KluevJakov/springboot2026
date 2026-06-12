@@ -28,6 +28,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/users", "/api/auth").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/activate/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/users").hasAuthority(Constants.Roles.ADMIN_CODE)
                         .requestMatchers(HttpMethod.DELETE, "/api/tasks").hasAuthority(Constants.Roles.ADMIN_CODE)
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()

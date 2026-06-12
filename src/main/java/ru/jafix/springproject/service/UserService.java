@@ -8,6 +8,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.jafix.springproject.config.Constants;
+import ru.jafix.springproject.dto.common.Status;
+import ru.jafix.springproject.dto.common.StatusDto;
 import ru.jafix.springproject.dto.users.CreateUserDto;
 import ru.jafix.springproject.dto.users.UpdateUserDto;
 import ru.jafix.springproject.dto.users.UserDto;
@@ -27,6 +29,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
 
     public UserDto createUser(CreateUserDto createUserDto) {
@@ -44,8 +47,40 @@ public class UserService {
 
         userToSave.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
 
+        UUID activateKey = UUID.randomUUID();
+
+        userToSave.setActivateKey(activateKey);
+
         userRepository.save(userToSave);
+
+        mailService.send("Активация аккаунта",
+                "Для активации аккаунта перейдите по ссылке: http://localhost:8080/api/activate/" + activateKey,
+                userToSave.getLogin());
+
         return userMapper.toUserDto(userToSave);
+    }
+
+    public StatusDto activate (UUID activateKey) {
+        Optional<User> optionalUser = userRepository.findByActivateKey(activateKey);
+
+        if (optionalUser.isEmpty()) {
+            return StatusDto.builder()
+                    .message("Неверный код активации")
+                    .status(Status.ERROR)
+                    .build();
+        }
+
+        User userToActivate = optionalUser.get();
+
+        userToActivate.setActivateKey(null);
+        userToActivate.setEnable(true);
+
+        userRepository.save(userToActivate);
+
+        return StatusDto.builder()
+                .status(Status.SUCCESS)
+                .message("Аккаунт активирован успешно, можете проходить процедуру аутентификации")
+                .build();
     }
 
     @CachePut(key = "#updateUserDto.id", cacheNames = "users")
