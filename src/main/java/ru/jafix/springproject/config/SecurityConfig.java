@@ -13,7 +13,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.jafix.springproject.config.filters.JwtFilter;
 import ru.jafix.springproject.repository.UserRepository;
+import ru.jafix.springproject.service.AuthService;
 import ru.jafix.springproject.service.UserDetailsServiceImpl;
 
 @Configuration
@@ -33,7 +36,8 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -51,5 +55,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder () {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtFilter jwtFilter() {
+        return new JwtFilter();
     }
 }

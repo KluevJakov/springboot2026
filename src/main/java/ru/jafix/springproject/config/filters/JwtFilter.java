@@ -5,19 +5,23 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.jafix.springproject.service.AuthService;
 
 import java.io.IOException;
 
-@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
     private final String TOKEN_TYPE = "Bearer ";
-    private final AuthService authService;
+
+    @Autowired
+    private AuthService authService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         String fullJwt = request.getHeader("Authorization");
 
@@ -28,10 +32,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String jwt = fullJwt.substring(TOKEN_TYPE.length());
 
-        if (authService.validateJwt(jwt)) {
-
+        if (authService.authenticateByJwt(jwt)) {
+            filterChain.doFilter(request, response);
+            return;
         }
 
-        filterChain.doFilter(request, response);
+        response.setStatus(401);
     }
 }

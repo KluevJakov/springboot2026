@@ -1,5 +1,7 @@
 package ru.jafix.springproject.service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -15,11 +17,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.jafix.springproject.dto.auth.AuthDto;
 import ru.jafix.springproject.dto.auth.JwtResponse;
+import ru.jafix.springproject.dto.auth.TrustedToken;
+import ru.jafix.springproject.model.Role;
 import ru.jafix.springproject.model.User;
 
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,6 +33,8 @@ import java.util.UUID;
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
+
+    private static final String ROLE_CLAIM_KEY = "role";
 
     @Value("${jwt.expiration}")
     private Long expirationTime;
@@ -44,7 +51,7 @@ public class AuthService {
 
             User currentUser = (User) token.getPrincipal();
 
-            String jwt = generateJwt(currentUser.getId());
+            String jwt = generateJwt(currentUser.getLogin(), currentUser.getRole().getName());
 
             return JwtResponse.builder()
                     .token(jwt)
@@ -61,29 +68,44 @@ public class AuthService {
         }
     }
 
-    public String generateJwt(UUID id) {
+    public String generateJwt(String login, String roleName) {
         Date now = new Date();
 
         byte[] keyBytes = Base64.getDecoder().decode(secretKey);
         SecretKey key = Keys.hmacShaKeyFor(keyBytes);
 
         return Jwts.builder()
-                .subject()
+                .subject(login)
+                .claim(ROLE_CLAIM_KEY, roleName)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + expirationTime))
                 .signWith(key, Jwts.SIG.HS512)
                 .compact();
     }
 
-    public boolean validateJwt(String jwt) {
+    public boolean authenticateByJwt(String jwt) {
         byte[] keyBytes = Base64.getDecoder().decode(secretKey);
         SecretKey key = Keys.hmacShaKeyFor(keyBytes);
 
         try {
-            Jwts.parser()
+            Jws<Claims> result = Jwts.parser()
                     .verifyWith(key)
                     .build()
                     .parseSignedClaims(jwt);
+
+            String login = result.getPayload().getSubject();
+            String roleName = result.getPayload().get(ROLE_CLAIM_KEY, String.class);
+            Role role = Role.builder()
+                    .name(roleName)
+                    .build();
+
+            TrustedToken token = TrustedToken.builder()
+                    .login(login)
+                    .authorities(List.of(role))
+                    .authenticated(true)
+                    .build();
+
+            SecurityContextHolder.getContext().setAuthentication(token);
 
             return true;
         } catch (JwtException ex) {

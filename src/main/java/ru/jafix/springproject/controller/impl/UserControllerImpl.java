@@ -1,5 +1,6 @@
 package ru.jafix.springproject.controller.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,6 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@Validated
 @RequestMapping("/api/users")
 public class UserControllerImpl implements UserController {
 
@@ -32,7 +32,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping
-    public UserDto createUser(@RequestBody CreateUserDto createUserDto) {
+    public UserDto createUser(@RequestBody @Valid CreateUserDto createUserDto) {
         return userService.createUser(createUserDto);
     }
 

@@ -26,7 +26,7 @@ spring:
         format_sql: true
 
 jwt:
-  expiration: 180000
+  expiration: 1800000
   key: 0JTQtdGA0LXQstC90Y8sINCz0LTQtSDRgdC60YPRh9Cw0Lsg0JXQstCz0LXQvdC40LksCtCR0YvQu9CwINC/0YC80YfQuNCy0YvRhSDQtNGA0LjQsNC0Lgo
 
 server:
