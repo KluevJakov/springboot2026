@@ -27,7 +27,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/api/users", "/api/auth").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users", "/api/auth", "/api/test/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/activate/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/users").hasAuthority(Constants.Roles.ADMIN_CODE)
                         .requestMatchers(HttpMethod.DELETE, "/api/tasks").hasAuthority(Constants.Roles.ADMIN_CODE)

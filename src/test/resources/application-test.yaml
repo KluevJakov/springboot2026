@@ -14,11 +14,6 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 20MB
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/tasks
-    username: postgres
-    password: postgres
   liquibase:
     enabled: true
   jpa:
@@ -43,6 +38,12 @@ spring:
             enable: true
           ssl:
             enable: true
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
 jwt:
   expiration: 1800000
   key: 0JTQtdGA0LXQstC90Y8sINCz0LTQtSDRgdC60YPRh9Cw0Lsg0JXQstCz0LXQvdC40LksCtCR0YvQu9CwINC/0YC80YfQuNCy0YvRhSDQtNGA0LjQsNC0Lgo
