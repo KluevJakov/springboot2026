@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.jafix.springproject.controller.TaskController;
 import ru.jafix.springproject.dto.tasks.CreateTaskDto;
+import ru.jafix.springproject.dto.tasks.TaskDto;
 import ru.jafix.springproject.model.Task;
 import ru.jafix.springproject.service.TaskService;
 
@@ -38,7 +39,7 @@ public class TaskControllerImpl implements TaskController {
 
     @Override
     @PutMapping
-    public Task editTask(@RequestBody Task task) {
+    public Task editTask(@RequestBody TaskDto task) {
         return taskService.editTask(task);
     }
 

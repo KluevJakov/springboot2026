@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ru.jafix.springproject.dto.tasks.CreateTaskDto;
 import ru.jafix.springproject.dto.common.ErrorDto;
+import ru.jafix.springproject.dto.tasks.TaskDto;
 import ru.jafix.springproject.model.Task;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface TaskController {
     )
     Task createTask(@Parameter(description = "Модель для создания задачи") CreateTaskDto createTaskDto);
 
-    Task editTask(Task task);
+    Task editTask(TaskDto task);
 
     Task findById(UUID id);
 

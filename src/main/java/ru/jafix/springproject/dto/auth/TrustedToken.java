@@ -37,7 +37,7 @@ public class TrustedToken implements Authentication {
 
     @Override
     public @Nullable Object getPrincipal() {
-        return login;
+        return getName();
     }
 
     @Override

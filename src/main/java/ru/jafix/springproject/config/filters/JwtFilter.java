@@ -5,18 +5,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.jafix.springproject.service.AuthService;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final String TOKEN_TYPE = "Bearer ";
+    private static final String TOKEN_TYPE = "Bearer ";
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

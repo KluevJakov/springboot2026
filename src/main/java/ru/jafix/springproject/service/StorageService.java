@@ -19,6 +19,8 @@ import java.util.List;
 @Service
 public class StorageService {
 
+    public static final String UPLOADS_DIR = "uploads";
+
     public List<StatusDto> multiUpload(MultipartFile[] files) {
         List<StatusDto> statuses = new ArrayList<>();
         for(MultipartFile mf : files) {
@@ -29,7 +31,7 @@ public class StorageService {
 
     public StatusDto upload(byte[] data, String filename) {
         try {
-            Path path = Paths.get("uploads");
+            Path path = Paths.get(UPLOADS_DIR);
 
             if (!Files.exists(path)) {
                 Files.createDirectories(path);
@@ -54,7 +56,7 @@ public class StorageService {
     public StatusDto upload(MultipartFile file) {
 
         try {
-            Path path = Paths.get("uploads");
+            Path path = Paths.get(UPLOADS_DIR);
 
             if (file.getSize() > 1_048_576L) {
                 throw new IllegalArgumentException("Размер файла превышает 1 МБ");
@@ -66,7 +68,6 @@ public class StorageService {
 
             path = path.resolve(file.getOriginalFilename());
 
-            //Files.copy(file.getInputStream(), path);
             Files.write(path, file.getBytes());
         } catch (Exception e) {
             return StatusDto.builder()
@@ -81,7 +82,7 @@ public class StorageService {
     }
 
     public Resource download(String filename) throws MalformedURLException {
-        Path path = Paths.get("uploads").resolve(filename);
+        Path path = Paths.get(UPLOADS_DIR).resolve(filename);
 
         return new UrlResource(path.toUri());
     }

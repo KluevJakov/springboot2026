@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jafix.springproject.dto.tasks.CreateTaskDto;
+import ru.jafix.springproject.dto.tasks.TaskDto;
 import ru.jafix.springproject.mapper.TaskMapper;
 import ru.jafix.springproject.model.Task;
 import ru.jafix.springproject.repository.TaskRepository;
@@ -29,7 +30,7 @@ public class TaskService {
     }
 
     @CachePut(key = "#task.id", cacheNames = "tasks")
-    public Task editTask(Task task) {
+    public Task editTask(TaskDto task) {
         if (task.getId() == null) {
             throw new IllegalArgumentException("При редактировании задачи надо указать ID");
         }
@@ -38,7 +39,7 @@ public class TaskService {
             throw new IllegalArgumentException("Название задачи не может быть пустым");
         }
 
-        return taskRepository.save(task);
+        return taskRepository.save(taskMapper.fromDto(task));
     }
 
     @Cacheable(key = "#id", cacheNames = "tasks")

@@ -1,6 +1,7 @@
 package ru.jafix.springproject.dto.users;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.jafix.springproject.model.Task;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 42L;

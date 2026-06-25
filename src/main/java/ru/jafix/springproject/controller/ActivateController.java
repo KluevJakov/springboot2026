@@ -2,10 +2,7 @@ package ru.jafix.springproject.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.jafix.springproject.dto.auth.AuthDto;
-import ru.jafix.springproject.dto.auth.JwtResponse;
 import ru.jafix.springproject.dto.common.StatusDto;
-import ru.jafix.springproject.service.AuthService;
 import ru.jafix.springproject.service.UserService;
 
 import java.util.UUID;

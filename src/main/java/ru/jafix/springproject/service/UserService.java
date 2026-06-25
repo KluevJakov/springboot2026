@@ -87,8 +87,6 @@ public class UserService {
     public UserDto editUser(UpdateUserDto updateUserDto) {
         User userToSave = userMapper.toUser(updateUserDto);
 
-        //TODO: добавить обновление роли пользователя
-
         userRepository.save(userToSave);
         return userMapper.toUserDto(userToSave);
     }

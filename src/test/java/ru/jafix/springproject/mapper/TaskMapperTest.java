@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class TaskMapperTest {
+class TaskMapperTest {
 
     private static final UUID USER_UUID = UUID.fromString("96492d59-0ad5-4c00-892d-590ad5ac00f3");
     private static final String TASK_NAME = "Сделать зарядку";

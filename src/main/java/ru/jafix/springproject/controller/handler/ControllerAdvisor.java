@@ -19,6 +19,8 @@ import java.util.List;
 @Slf4j
 public class ControllerAdvisor {
 
+    public static final String VALIDATION_ERROR_MSG = "Ошибка валидации: {}";
+
     @ExceptionHandler(exception = MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         List<String> errorMessages = e.getBindingResult().getAllErrors()
@@ -30,7 +32,7 @@ public class ControllerAdvisor {
                 .errors(errorMessages)
                 .build();
 
-        log.error("Ошибка валидации: {}", errorDto);
+        log.error(VALIDATION_ERROR_MSG, errorDto);
         return ResponseEntity.badRequest().body(errorDto);
     }
 
@@ -40,7 +42,7 @@ public class ControllerAdvisor {
                 .errors(List.of(e.getMessage()))
                 .build();
 
-        log.error("Ошибка валидации: {}", errorDto);
+        log.error(VALIDATION_ERROR_MSG, errorDto);
         return ResponseEntity.badRequest().body(errorDto);
     }
 
@@ -50,7 +52,7 @@ public class ControllerAdvisor {
                 .errors(List.of(e.getMessage()))
                 .build();
 
-        log.error("Ошибка валидации: {}", errorDto);
+        log.error(VALIDATION_ERROR_MSG, errorDto);
         return ResponseEntity.badRequest().body(errorDto);
     }
 

@@ -24,7 +24,7 @@ import ru.jafix.springproject.service.UserDetailsServiceImpl;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthService authService) {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/users", "/api/auth", "/api/test/**").permitAll()
@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter(authService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -59,7 +59,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtFilter jwtFilter() {
-        return new JwtFilter();
+    public JwtFilter jwtFilter(AuthService authService) {
+        return new JwtFilter(authService);
     }
 }
